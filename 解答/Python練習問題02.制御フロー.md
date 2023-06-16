@@ -1,0 +1,62 @@
+# Python練習問題02. 制御フロー
+
+---
+
+## 設問1
+
+`[[8,1,3], [-2,6,4]]` はリストにリストが入っています。内側のリストの最小値をそれぞれコンソールに出力するプログラムを書いてください。
+
+### 解答(設問1)
+
+```python
+>>> num_lists = [[8,1,3], [-2,6,4]]
+>>> for num_list in num_lists:
+...     min = num_list[0]
+...     for num in num_list:
+...         if num < min:
+...             min = num
+...     print(min)
+...
+1
+-2
+```
+
+---
+
+## 設問2
+
+1から100までの整数で、
+
+- 3の倍数の時はFizz
+- 5の倍数の時はBuzz
+- 3の倍数でもあり5の倍数でもあるときはFizzBuzz
+
+と表示するプログラムを書いてください。
+
+### 解答(設問2)
+
+```python
+>>> for i in range(1, 101):
+...     if i % 3 == 0 and i % 5 == 0:
+...             print('FizzBuzz')
+...     elif i % 3 == 0:
+...             print('Fizz')
+...     elif i % 5 == 0:
+...             print('Buzz')
+... 
+Fizz
+Buzz
+Fizz
+Fizz
+Buzz
+Fizz
+FizzBuzz
+Fizz
+(中略)
+FizzBuzz
+Fizz
+Buzz
+Fizz
+Fizz
+Buzz
+```

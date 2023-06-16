@@ -1,0 +1,138 @@
+# Python練習問題03. 関数、モジュール
+
+---
+
+## 設問1
+
+以下のように、引数で与えた数が素数か判定しbool値を返す関数primを作成してください。
+
+```python
+>>> prim(13)
+True
+
+>>> prim(121)
+False
+```
+
+### 解答(設問1)
+
+```python
+>>> def prime(num):
+...     if num <= 1:
+...         return False
+...     for i in range(2, num):
+...         if (num % i) == 0:
+...             return False
+...     else:
+...         return True
+...
+>>> print(prime(13))
+True
+>>> print(prime(121))  
+False
+```
+
+---
+
+## 設問2
+
+以下のように、引数で与えた数だけフィボナッチ数をリストで返す関数fiboを作成してください。
+
+```python
+>>> fibo(5)
+[1, 1, 2, 3, 5]
+
+>>> fibo(8)
+[1, 1, 2, 3, 5, 8, 13, 21]
+```
+
+### 解答(設問2)
+
+```python
+>>> def fibo(num):
+...     fibo_list = [1, 1]
+...     if num <= 0:
+...         return [];
+...     elif num < 3:  
+...         return fibo_list[:num]
+...     for i in range(2, num):
+...         fibo_list.append(fibo_list[-1] + fibo_list[-2])        
+...     return fibo_list
+... 
+```
+
+### 別解(設問2) 再起呼び出し
+
+```python
+>>> def fibo(num):
+...     if num <= 0:
+...         return [];
+...     elif num < 3:  
+...         return [1, 1][:num]
+...     fibo_list = fibo(num - 1)
+...     fibo_list.append(fibo_list[-1] + fibo_list[-2])        
+...     return fibo_list
+... 
+```
+
+---
+
+## 設問3
+
+演習1、2で作成した関数もしくは自分で適当に作成した関数をモジュール化し、それを外部から利用してみてください。import文、from文の両方を使ってみてください。
+
+### 解答(設問3)
+
+ファイル名:my_module.py
+
+``` python
+def prime(num):
+    if num <= 1:
+        return False
+    for i in range(2, num):
+        if (num % i) == 0:
+            return False
+    else:
+        return True
+
+
+def my_fibo(num):
+    fibo = [1, 1]
+
+    if num <= 0:
+        return [];
+    elif num < 3:  
+        return fibo[:num]
+
+    for i in range(2, num):
+        fibo.append(fibo[-1] + fibo[-2])        
+
+    return fibo
+
+# このファイルをスクリプトとして(python my_module.pyという形で)実行する場合は
+# 以下が実行される
+if __name__ == '__main__':
+    print(このモジュールには以下の関数が含まれています)
+    print('prime(num) : numが素数かどうかを判定する')
+    print('fibo(num)  : フィボナッチ数列のリストをnum個返す')
+```
+
+importの利用
+
+```python
+>>> import my_module
+>>> my_module.prime(13)
+True
+>>> my_module.fibo(8)
+[1, 1, 2, 3, 5, 8, 13, 21]
+```
+
+fromの利用
+
+```python
+>>> from my_module import *
+>>> prime(13)
+True
+>>> fibo(8)
+[1, 1, 2, 3, 5, 8, 13, 21]
+```

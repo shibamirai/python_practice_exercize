@@ -1,0 +1,144 @@
+# Python練習問題06. テキスト/ファイル処理
+
+---
+
+## 設問1
+
+以下のCSV形式のテキストデータから、教科ごとの生徒の平均点を算出してください。
+
+~~~python
+text = '''名前, 国語, 数学, 英語
+鈴木, 80, 70, 75
+佐藤, 60, 80, 90
+山田, 92, 60, 90
+伊藤, 70, 95, 82'''
+~~~
+
+### 解答(設問1)
+
+~~~python
+text = '''名前, 国語, 数学, 英語
+鈴木, 80, 70, 75
+佐藤, 60, 80, 90
+山田, 92, 60, 90
+伊藤, 70, 95, 82'''
+
+# テキストを行ごとに分割
+lines = text.split('\n')
+
+# 先頭行を配列から取り出し、各列名を取得
+columns = lines.pop(0).split(',')
+
+# 名前列は不要なので削除
+del columns[0]
+
+# 教科別の合計点を格納するリストを準備
+point_list = []
+for subject in columns:
+    point_list.append(0)
+
+# 生徒ごとの処理
+for line in lines:
+    points = line.split(',')
+    del points[0]   # 名前列は削除
+    # 教科ごとに得点を加算
+    for i, point in enumerate(points):
+        point_list[i] += int(point)
+
+# 教科別に平均点を求めて表示
+for i, subject in enumerate(columns):
+    print(subject + ' : ' + str(point_list[i] / len(lines)))
+
+~~~
+
+---
+
+## 設問2
+
+テキストファイルをコピーするプログラムfilecopy.pyを作ってください。original.txtというテキストファイルがある場合、```python filecopy.py original.txt destination.txt```のように使用して、original.txtと同じ内容のdestination.txtファイルを作成します。
+
+### 解答(設問2)
+
+ファイル名:filecopy.py
+
+~~~python
+import sys
+
+args = sys.argv
+if len(args) != 3:
+    sys.exit("引数は2つ指定してください")
+
+org_file = args[1]
+dest_file = args[2]
+
+with(open(org_file, encoding="utf-8", mode='r') as r,
+     open(dest_file, encoding="utf-8", mode='w') as w):
+    for line in r:
+        w.write(line)
+
+~~~
+
+---
+
+## 設問3
+
+演習2で作ったプログラムを改造し、```python filecopy.py -n original.txt destination.txt```というようにように、実行時にオプション引数```-n```をつけるとコピー時に行番号も書き出すようにしてください。このとき行番号は最後の行の桁数にあうように0詰めしてください（全部で20行なら01～20、1000行なら0001～1000）。たとえば以下のようになります。
+
+original.txt（aからzまで１行に１文字ずつ書かれている場合)
+
+> a
+> b
+> c
+> ～略～
+> x
+> y
+> z
+
+destination.txt
+
+> 01 a
+> 02 b
+> 03 c
+> ～略～
+> 24 x
+> 25 y
+> 26 z
+
+### 解答(設問3)
+
+ファイル名:filecopy.py
+
+~~~python
+import sys
+
+args = sys.argv
+
+# オプションの有無をチェック
+has_option = False
+for arg in args[:]:
+    if arg == '-n':
+        has_option = True
+        args.remove(arg)    # オプションを引数から取り除く
+        break
+
+# オプション以外の引数の個数の確認
+if len(args) != 3:
+    sys.exit("引数の数が不正です")
+
+org_file = args[1]
+dest_file = args[2]
+
+with(open(org_file, encoding="utf-8", mode='r') as r,
+     open(dest_file, encoding="utf-8", mode='w') as w):
+    # ファイルの行数を調べるために一括で読み込む
+    lines = r.readlines()
+    digit = len(str(len(lines)))     # 行数の桁数は、数値を文字列にしてその文字列の長さを調べればよい
+    for i, line in enumerate(lines):
+        if has_option:
+            # オプションが指定されていれば先頭に行番号をつける
+            w.write(str(i).zfill(digit) + ' ' + line)
+        else:
+            # オプションがなければそのまま
+            w.write(line)
+
+~~~
