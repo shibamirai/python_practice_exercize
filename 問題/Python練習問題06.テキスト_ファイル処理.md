@@ -12,13 +12,9 @@ text = '''名前, 国語, 数学, 英語
 伊藤, 70, 95, 82'''
 ```
 
----
-
 ## 設問2
 
 テキストファイルをコピーするプログラムfilecopy.pyを作ってください。original.txtというテキストファイルがある場合、```python filecopy.py original.txt destination.txt```のように使用して、original.txtと同じ内容のdestination.txtファイルを作成します。
-
----
 
 ## 設問3
 
