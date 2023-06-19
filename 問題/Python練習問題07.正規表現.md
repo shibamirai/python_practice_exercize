@@ -1,0 +1,26 @@
+# Python練習問題07. 正規表現
+
+## 設問1
+
+過去の演習で作成した、引数で与えた文章中に出現する単語とその出現数を返す関数word_countでは、数字や句読点も単語の一部として含んでいました。これを改良し正規表現を用いて英単語のみをカウントするようにしてください。このとき大文字小文字の違いは区別せずに同じ単語としてカウントしてください。
+
+```python
+>>> word_count('So many men, so many minds.')
+{'so': 2, 'many': 2, 'men': 1, 'minds': 1}
+```
+
+## 設問2
+
+コンソールから入力した文字列がURLであれば「正しいURLです」、そうでなければ「URLではありません」と表示するプログラムvalid_url.pyを書いてください。
+
+```python
+> python valid_url.py
+http://example.com/index.html'
+正しいURLです
+hoge@gmail.com
+URLではありません
+https://localhost:8000/login
+正しいURLです
+# 終了はCtrl+Cなどでよい
+> 
+```

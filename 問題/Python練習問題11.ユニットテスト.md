@@ -1,0 +1,97 @@
+# Python練習問題11. ユニットテスト
+
+プログラムを作ったらそれが期待通りに動くかどうかテストする必要があります。そのうち関数やクラスを単体でテストすることをユニットテストといい、Pythonではunittestモジュールが使用できます。
+
+例えば、「9. オブジェクト指向」の演習5で作成したStringListクラスをmylist.pyで定義したとすると、
+
+mylist.py
+
+```python
+class StringList(list):
+    def append(self, item):
+        if type(item) is str:
+            super().append(item)
+
+```
+
+以下のようなテストプログラムを作成してユニットテストを行うことができます。
+
+my_unittest.py
+
+```python
+import unittest
+from mylist import StringList   # テスト対象のクラスをインポート
+
+# unittest.TestCaseを継承してテストクラスを作成
+class TestStringList(unittest.TestCase):
+    # テストの前準備を行うメソッド
+    def setUp(self):
+        # テスト対象を準備する
+        self.str_list = StringList()
+
+    # 実施したいテスト内容ごとにtest_XXXXという名前でメソッドを作成する。
+    def test_reject_number(self):
+        # 文字列以外に整数をリストに追加してみる
+        self.str_list.append(123)
+        self.str_list.append('abc')
+        self.str_list.append(0)
+        self.str_list.append(-3)
+        self.str_list.append('xyz')
+
+        # assertXXXXというメソッドで結果が期待値と一致しているかをテストする
+        # ここではassertListEqualを使ってリストの中身が文字列だけになっているかを確認する
+        self.assertListEqual(self.str_list, ['abc', 'xyz'])
+
+if __name__ == '__main__':
+    # ユニットテストの実行。
+    unittest.main()
+
+    # テスト結果をより詳細に出力したい場合は、上記の代わりに以下のようにする。
+    # suite = unittest.TestLoader().loadTestsFromTestCase(TestMyList)
+    # unittest.TextTestRunner(verbosity=2).run(suite)
+```
+
+このテストプログラムを実行するとTestCaseを継承したクラスのtest_XXXXメソッドが順に実行され、すべて期待値どおりであればOKとなります。
+
+```python
+> python my_unittest.py
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK
+> 
+```
+
+## 設問1
+
+上記のTestStringListクラスにテストメソッドを追加して、少数が追加できないことを確認するテストを行ってください。
+
+## 設問2
+
+簡単な暗号化を行う関数を作成します。次のユニットテストに合格するようにプログラム`my_crypt.py`を作成してください。
+
+```python
+import unittest
+import my_crypt
+
+class TestMyCrypt(unittest.TestCase):
+    def setUp(self):
+        pass
+    
+    # 'dog'を暗号化すると'fqi'となる
+    def test_case1(self):
+        self.assertEqual(my_crypt.encrypt('dog'), 'fqi')
+    
+    # 'zoo'を暗号化すると'bqq'となる
+    def test_case2(self):
+        self.assertEqual(my_crypt.encrypt('zoo'), 'bqq')
+
+    # アルファベット以外の文字はそのままで、大文字は小文字に変換してから暗号化される
+    def test_case3(self):
+        self.assertEqual(my_crypt.encrypt('I am 20 years old.'), 'k co 20 agctu qnf.')
+
+if __name__ == '__main__':
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestMyCrypt)
+    unittest.TextTestRunner(verbosity=2).run(suite)
+```

@@ -1,0 +1,19 @@
+# Python練習問題10. 例外処理
+
+## 設問1
+
+引数でファイル名を指定するとその中身を出力する関数catを作成してください。存在しないファイルが指定されたときは「ファイルが存在しません」と出力してください。また例外処理の練習のため、withは使わずにファイルのクローズ処理を忘れずに記述してください。
+
+### 解答(設問1)
+
+```python
+def cat(filename):
+    try:
+        f = open(filename, encoding="utf-8", mode='r') 
+        for line in f:
+            print(line)
+    except FileNotFoundError:
+        print('ファイルが存在しません')
+    finally:
+        f.close()
+```

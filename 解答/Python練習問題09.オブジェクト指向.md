@@ -1,0 +1,159 @@
+# Python練習問題09. オブジェクト指向
+
+## 設問1
+
+以下の条件でクラスを作成してください。
+
+- クラス名 BodySize
+- 名前、身長、体重を表すインスタンス変数 name, height, weight
+- 名前、身長、体重を引数にもつコンストラクタ
+
+### 解答(設問1)
+
+```python
+>>> class BodySize:
+...     def __init__(self, name, height, weight):
+...         self.name = name
+...         self.height = height
+...         self.weight = weight
+... 
+```
+
+---
+
+## 設問2
+
+演習1で作成したBodySizeクラスを使って以下のように複数のインスタンスを用意します。ここから一番身長が高い人および一番体重が軽い人の名前を表示するプログラムを書いてください。
+
+```python
+hanamichi = BodySize('sakuragi', 189, 83)
+kaede = BodySize('rukawa', 187, 75)
+takenori = BodySize('akagi', 197, 93)
+ryota = BodySize('miyagi', 168, 59)
+hisashi = BodySize('mitsui', 184, 70)
+```
+
+### 解答(設問2)
+
+```python
+>>> max_height = hanamichi
+>>> min_weight = hanamichi
+>>> for member in [hanamichi, kaede, takenori, ryota, hisashi]:
+...     if max_height.height < member.height:
+...         max_height = member
+...     if min_weight.weight > member.weight:
+...         min_weight = member
+... 
+>>> print('一番身長が高い人: ' + max_height.name)
+一番身長が高い人: akagi
+>>> print('一番体重が軽い人: ' + min_weight.name)
+一番体重が軽い人: miyagi
+```
+
+---
+
+## 設問3
+
+先のBodySizeクラスにBMIと適正体重をタプルで返すメソッドbmi()を追加してください。BMIと適正体重は下記の計算式で求められます。それぞれ小数点第一位まで求めてください。
+
+- BMI = 体重kg ÷ (身長m)^2
+- 適正体重 = (身長m)^2 × 22
+
+### 解答(設問3)
+
+```python
+>>> class BodySize:
+...     def __init__(self, name, height, weight):
+...         self.name = name
+...         self.height = height
+...         self.weight = weight
+... 
+...     def bmi(self):
+...         bmi = round(self.weight / ((self.height / 100) ** 2), 1)
+...         ideal_weight = round(((self.height / 100) ** 2) * 22, 1)
+...         return (bmi, ideal_weight)
+... 
+>>> hanamichi = BodySize('sakuragi', 189, 83)
+>>> bmi, ideal_weight = hanamichi.bmi()
+>>> print('BMI = ' + str(bmi))
+BMI = 23.2
+>>> print('適正体重 = ' + str(ideal_weight))
+適正体重 = 78.6
+```
+
+元のクラスに後からメソッドを追加することもできます
+
+```python
+>>> def bmi(self):
+...     bmi = round(self.weight / ((self.height / 100) ** 2), 1)
+...     ideal_weight = round(((self.height / 100) ** 2) * 22, 1)
+...     return (bmi, ideal_weight)
+... 
+>>> BodySize.bmi = bmi
+>>> 
+```
+
+---
+
+## 設問4
+
+以下のように長方形を表すRectangleクラスを用意します。このクラスのコンストラクタでは長方形の幅と高さの２つの引数を受け取り、メソッドarea()でその面積を返します。このクラスを継承して正方形を表すクラスSquareを作成し、引数１つのコンストラクタで一辺の長さだけを受け取るようにしてください。
+
+```python
+class Rectangle:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+    
+    def area(self):
+        return self.width * self.height
+
+```
+
+```python
+>>> rectangle = Rectangle(3, 5)
+>>> rectangle.area()
+15
+>>> 
+```
+
+### 解答(設問4)
+
+```python
+class Square(Rectangle):
+    def __init__(self, side_length):
+        super().__init__(side_length, side_length)
+
+```
+
+```python
+>>> square = Square(5)
+>>> square.area()
+25
+>>> 
+```
+
+---
+
+## 設問5
+
+組込み型のlistクラスを継承し、文字列(str)型だけを格納できるクラスStringListを作成してください。
+以下のように使用します。
+
+```python
+>>> sl = StringList()
+>>> sl.append('a')
+>>> sl.append(1)    # 数値なので受け取らない
+>>> sl.append('xxx')
+>>> print(sl)
+['a', 'xxx']
+```
+
+### 解答(設問5)
+
+```python
+class StringList(list):
+    def append(self, item):
+        if type(item) is str:
+            super().append(item)
+```

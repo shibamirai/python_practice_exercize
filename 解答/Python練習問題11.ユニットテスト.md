@@ -1,0 +1,112 @@
+# Python練習問題11. ユニットテスト
+
+## 設問1
+
+上記のTestStringListクラスにテストメソッドを追加して、少数が追加できないことを確認するテストを行ってください。
+
+### 解答(設問1)
+
+my_unittest.py
+
+```python
+import unittest
+from mylist import StringList   # テスト対象のクラスをインポート
+
+class TestStringList(unittest.TestCase):
+    def setUp(self):
+        self.str_list = StringList()
+
+    def test_reject_number(self):
+        self.str_list.append(123)
+        self.str_list.append('abc')
+        self.str_list.append(0)
+        self.str_list.append(-3)
+        self.str_list.append('xyz')
+        self.assertListEqual(self.str_list, ['abc', 'xyz'])
+
+    # 少数が除外されることのテスト
+    def test_reject_float(self):
+        self.str_list.append(1.23)
+        self.str_list.append('abc')
+        self.str_list.append(0.0)
+        self.str_list.append(-3.14)
+        self.str_list.append('xyz')
+        self.assertListEqual(self.str_list, ['abc', 'xyz'])
+
+
+if __name__ == '__main__':
+    # 結果を詳細に出力したい場合
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestStringList)
+    unittest.TextTestRunner(verbosity=2).run(suite)
+
+```
+
+テストの実行。詳細な結果ではメソッドごとの結果も表示される。
+
+```python
+> python my_unittest.py
+test_reject_number (__main__.TestStringList) ... ok
+test_reject_float (__main__.TestStringList) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.001s
+
+OK
+> 
+```
+
+---
+
+## 設問2
+
+簡単な暗号化を行う関数を作成します。次のユニットテストに合格するようにプログラム`my_crypt.py`を作成してください。
+
+```python
+import unittest
+import my_crypt
+
+class TestMyCrypt(unittest.TestCase):
+    def setUp(self):
+        pass
+    
+    # 'dog'を暗号化すると'fqi'となる
+    def test_case1(self):
+        self.assertEqual(my_crypt.encrypt('dog'), 'fqi')
+    
+    # 'zoo'を暗号化すると'bqq'となる
+    def test_case2(self):
+        self.assertEqual(my_crypt.encrypt('zoo'), 'bqq')
+
+    # アルファベット以外の文字はそのままで、大文字は小文字に変換してから暗号化される
+    def test_case3(self):
+        self.assertEqual(my_crypt.encrypt('I am 20 years old.'), 'k co 20 agctu qnf.')
+
+if __name__ == '__main__':
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestMyCrypt)
+    unittest.TextTestRunner(verbosity=2).run(suite)
+```
+
+### 解答(設問2)
+
+my_crypt.py
+
+```python
+def encrypt(original):
+    alpha = 'abcdefghijklmnopqrstuvwxyz'
+
+    encrypted = ''
+    for c in original.lower():
+        index = alpha.find(c)
+        if index != -1:
+            c = alpha[(index + 2) % len(alpha)]
+        encrypted += c
+
+    return encrypted
+
+if __name__ == '__main__':
+    print('''使い方:
+>>> import my_crypt
+>>> encrypted = my_crypt.encrypt('dog')
+>>> print(encrypted)
+fqi''')
+```

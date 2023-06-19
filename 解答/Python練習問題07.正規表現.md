@@ -1,0 +1,65 @@
+# Python練習問題07. 正規表現
+
+## 設問1
+
+過去の演習で作成した、引数で与えた文章中に出現する単語とその出現数を返す関数word_countでは、数字や句読点も単語の一部として含んでいました。これを改良し正規表現を用いて英単語のみをカウントするようにしてください。このとき大文字小文字の違いは区別せずに同じ単語としてカウントしてください。
+
+```python
+>>> word_count('So many men, so many minds.')
+{'so': 2, 'many': 2, 'men': 1, 'minds': 1}
+```
+
+### 解答(設問1)
+
+```python
+import re
+
+def word_count(text):
+    words = re.findall(r'\b[a-zA-Z]+\b', text.lower())
+    wc_dict = {}
+    for word in words:
+        if word not in wc_dict: 
+            wc_dict[word] = 1
+        else:
+            wc_dict[word] += 1
+    print(wc_dict)
+
+```
+
+---
+
+## 設問2
+
+コンソールから入力した文字列がURLであれば「正しいURLです」、そうでなければ「URLではありません」と表示するプログラムvalid_url.pyを書いてください。
+
+```python
+> python valid_url.py
+http://example.com/index.html'
+正しいURLです
+hoge@gmail.com
+URLではありません
+https://localhost:8000/login
+正しいURLです
+# 終了はCtrl+Cなどでよい
+> 
+```
+
+### 解答(設問2)
+
+正規表現を自力で作成することはほとんどありません。汎用的な正規表現は検索すれば見つかることが多いのでそれらを積極的に利用しましょう。
+
+valid.url
+
+```python
+import re
+
+pattern = "https?://[\w/:%#\$&\?\(\)~\.=\+\-]+"
+
+while True:
+    text = input()
+    if re.match(pattern, text):
+        print("正しいURLです")
+    else:
+        print("URLではありません")
+
+```
