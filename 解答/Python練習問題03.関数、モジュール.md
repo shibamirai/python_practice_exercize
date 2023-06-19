@@ -1,7 +1,5 @@
 # Python練習問題03. 関数、モジュール
 
----
-
 ## 設問1
 
 以下のように、引数で与えた数が素数か判定しbool値を返す関数primを作成してください。
@@ -83,7 +81,7 @@ False
 
 ### 解答(設問3)
 
-ファイル名:my_module.py
+my_module.py
 
 ``` python
 def prime(num):

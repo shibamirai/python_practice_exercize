@@ -1,7 +1,5 @@
 # Python練習問題06. テキスト/ファイル処理
 
----
-
 ## 設問1
 
 以下のCSV形式のテキストデータから、教科ごとの生徒の平均点を算出してください。
@@ -59,7 +57,7 @@ for i, subject in enumerate(columns):
 
 ### 解答(設問2)
 
-ファイル名:filecopy.py
+filecopy.py
 
 ~~~python
 import sys
@@ -84,29 +82,33 @@ with(open(org_file, encoding="utf-8", mode='r') as r,
 
 演習2で作ったプログラムを改造し、```python filecopy.py -n original.txt destination.txt```というようにように、実行時にオプション引数```-n```をつけるとコピー時に行番号も書き出すようにしてください。このとき行番号は最後の行の桁数にあうように0詰めしてください（全部で20行なら01～20、1000行なら0001～1000）。たとえば以下のようになります。
 
-original.txt（aからzまで１行に１文字ずつ書かれている場合)
+original.txt (aからzまで１行に１文字ずつ書かれている場合)
 
-> a
-> b
-> c
-> ～略～
-> x
-> y
-> z
+~~~text
+a
+b
+c
+（中略）
+x
+y
+z
+~~~
 
 destination.txt
 
-> 01 a
-> 02 b
-> 03 c
-> ～略～
-> 24 x
-> 25 y
-> 26 z
+~~~text
+01 a
+02 b
+03 c
+（中略）
+24 x
+25 y
+26 z
+~~~
 
 ### 解答(設問3)
 
-ファイル名:filecopy.py
+filecopy.py
 
 ~~~python
 import sys
